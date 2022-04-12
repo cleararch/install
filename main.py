@@ -61,10 +61,20 @@ def time_select(*args):
 
 def user_select(*args):
     F = User(name="User")
-    global_bat_w.write("useradd -m -d /home/" + F.user.value + " " + F.user.value + "-s " \
+    F.edit()
+    T=False
+    for i in ["bash","zsh","fish"]:
+        if F.shell.value==i:
+            F=True
+            break
+    if F:
+        global_bat_w.write("useradd -m -d /home/" + F.user.value + " " + F.user.value + "-s " \
                        + F.shell.value + " ; echo -e '" + F.password.value + "'|passwd ")
+    else:
+        Dialog(name="ShellError").edit()
+        user_select()
 
 
 if __name__ == '__main__':
     print("Welcome to clear-arch!")
-    npyscreen.wrapper_basic(language)
+    npyscreen.wrapper_basic(user_select)
