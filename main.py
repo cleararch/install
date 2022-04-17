@@ -22,6 +22,17 @@ class User(npyscreen.Form):
         self.shell = self.add(npyscreen.TitleText, name="shell")
 
 
+class install_kernel(npyscreen.Form):
+    def create(self):
+        self.kernel = self.add(npyscreen.TitleText, name="Kernel Name")
+
+    def install(self):
+        if self.kernel.value == "linux-clear":
+            global_bat_w.write("pacm source linux-clear")
+        else:
+            Dialog(name="Can't found this kernel")
+
+
 def language(*args):
     # 语言选择
     t = False
@@ -62,14 +73,14 @@ def time_select(*args):
 def user_select(*args):
     F = User(name="User")
     F.edit()
-    T=False
-    for i in ["bash","zsh","fish"]:
-        if F.shell.value==i:
-            F=True
+    T = False
+    for i in ["bash", "zsh", "fish"]:
+        if F.shell.value == i:
+            F = True
             break
     if F:
         global_bat_w.write("useradd -m -d /home/" + F.user.value + " " + F.user.value + "-s " \
-                       + F.shell.value + " ; echo -e '" + F.password.value + "'|passwd ")
+                           + F.shell.value + " ; echo -e '" + F.password.value + "'|passwd ")
     else:
         Dialog(name="ShellError").edit()
         user_select()
