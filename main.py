@@ -5,11 +5,13 @@ global_bat_r = open("/tmp/install.sh", "w", encoding="utf8")
 
 
 class Dialog(npyscreen.Form):
+    # 提示，需要的时候就创建一个
     def create(self):
         self.add(npyscreen.FixedText, name=self.name)
 
 
 class LanguageSelect(npyscreen.Form):
+    # 语言选择
     def create(self):
         self.keyLanguage = self.add(npyscreen.TitleText, name='Language')
 
@@ -23,12 +25,15 @@ class User(npyscreen.Form):
 
 
 class install_kernel(npyscreen.Form):
+    # 内核安装
     def create(self):
         self.kernel = self.add(npyscreen.TitleText, name="Kernel Name")
 
     def install(self):
         if self.kernel.value == "linux-clear":
-            global_bat_w.write("pacm source linux-clear")
+            global_bat_w.write("pacm install-mode source linux-clear")
+        elif self.kernel.value == "linux-zen":
+            global_bat_w.write("pacstrap /mnt linux-zen")
         else:
             Dialog(name="Can't found this kernel")
 
@@ -76,9 +81,9 @@ def user_select(*args):
     T = False
     for i in ["bash", "zsh", "fish"]:
         if F.shell.value == i:
-            F = True
+            T = True
             break
-    if F:
+    if T:
         global_bat_w.write("useradd -m -d /home/" + F.user.value + " " + F.user.value + "-s " \
                            + F.shell.value + " ; echo -e '" + F.password.value + "'|passwd ")
     else:
@@ -89,3 +94,4 @@ def user_select(*args):
 if __name__ == '__main__':
     print("Welcome to clear-arch!")
     npyscreen.wrapper_basic(user_select)
+    npyscreen.wrapper_basic(language)
