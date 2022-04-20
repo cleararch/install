@@ -37,7 +37,13 @@ class install_kernel(npyscreen.Form):
         else:
             Dialog(name="Can't found this kernel")
 
-
+class Part(npyscreen.Form):
+    # 分区设置
+    def create(self):
+        self.show_part = self.add(npyscreen.TitleText, name="Show part(use fdisk)(Press Y to show):")
+        self.part = self.add(npyscreen.TitleText, name="Part Create(Format: /dev/sdxn type size(Mib))")
+        self.tree = self.add(npyscreen.TitleText, name="Part Tree(Format:/dev/sdxn mount_point")
+        self.ok = self.add(npyscreen.TitleText, name="Finally Part Setting(Press 'Y')")
 def language(*args):
     # 语言选择
     t = False
