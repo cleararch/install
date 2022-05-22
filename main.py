@@ -1,4 +1,4 @@
-import os
+import os, re
 
 import npyscreen
 
@@ -51,7 +51,7 @@ class Part(npyscreen.Form):
 
 
 def part_create(*args):
-    label_made=False
+    label_made = False
     Dialog("Warling:In Next Step,We Will Delete All Of Your Data")
     ShowPart = False
     F = Part(name="Build Part")
@@ -63,10 +63,20 @@ def part_create(*args):
     if not ShowPart:
         if not label_made:
             os.system("parted mklable gpt")
-            label_made=True
+            label_made = True
+        # 分区
         part = F.part.value
-
-        os.system("parted mkpart")
+        if part:
+            T1 = []
+            while True:
+                T = re.match(" ", part)
+                if not T:
+                    break
+                T1.append(part[part.find[" "]])
+            if len(T1) != 3:
+                Dialog("Need values =3")
+                part_create()
+            os.system("parted mkpart "+T1[0]+" "+T1[1]+" "+T[2])
 
 
 def language(*args):
@@ -79,9 +89,9 @@ def language(*args):
         if F.keyLanguage.value == i:
             t = True
     if t:
-        global_bat_w.write("export LC_ALL=%s.utf8 LANG=%s.utf8" % (F.keyLanguage.value, F.keyLanguage.value))
-        global_bat_w.write("echo %s.UTF-8 UTF-8 > /etc/locale,gen")
-        global_bat_w.write("locale-gen")
+        global_bat_w.write("export LC_ALL=%s.utf8 LANG=%s.utf8\n" % (F.keyLanguage.value, F.keyLanguage.value))
+        global_bat_w.write("echo %s.UTF-8 UTF-8 > /etc/locale,gen\n")
+        global_bat_w.write("locale-gen\n")
     else:
         Dialog(name="Unsupported Language").edit()
         print(npyscreen.wrapper_basic(language))
@@ -100,7 +110,7 @@ def time_select(*args):
             t = True
             break
     if t:
-        global_bat_w.write("ln -sf /mnt/usr/share/zoneinfo/Asia/%s/etc/localtime" % F.keyTime.value)
+        global_bat_w.write("ln -sf /mnt/usr/share/zoneinfo/Asia/%s/etc/localtime\n" % F.keyTime.value)
     else:
         Dialog(name="Unsupported Time Zone").edit()
         time_select()
@@ -116,7 +126,7 @@ def user_select(*args):
             break
     if T:
         global_bat_w.write("useradd -m -d /home/" + F.user.value + " " + F.user.value + "-s " \
-                           + F.shell.value + " ; echo -e '" + F.password.value + "'|passwd ")
+                           + F.shell.value + " ; echo -e '" + F.password.value + "'|passwd \n")
     else:
         Dialog(name="ShellError").edit()
         user_select()
