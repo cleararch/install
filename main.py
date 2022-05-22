@@ -1,3 +1,5 @@
+import os
+
 import npyscreen
 
 global_bat_w = open("/tmp/install.sh", "w", encoding="utf8")
@@ -37,19 +39,42 @@ class install_kernel(npyscreen.Form):
         else:
             Dialog(name="Can't found this kernel")
 
+
 class Part(npyscreen.Form):
     # 分区设置
     def create(self):
         self.show_part = self.add(npyscreen.TitleText, name="Show part(use fdisk)(Press Y to show):")
-        self.part = self.add(npyscreen.TitleText, name="Part Create(Format: /dev/sdxn type size(Mib))")
-        self.tree = self.add(npyscreen.TitleText, name="Part Tree(Format:/dev/sdxn mount_point")
+        self.part = self.add(npyscreen.TitleText, name="Part Create(Format: /dev/n type size(Mib))")
+        self.tree = self.add(npyscreen.TitleText, name="Part Tree(Format:/dev/n mount_point")
         self.ok = self.add(npyscreen.TitleText, name="Finally Part Setting(Press 'Y')")
+        self.part_tree = npyscreen.Pager(os.popen("fdisk -l"))
+
+
+def part_create(*args):
+    label_made=False
+    Dialog("Warling:In Next Step,We Will Delete All Of Your Data")
+    ShowPart = False
+    F = Part(name="Build Part")
+    F.edit()
+    if F.show_part.value == "Y":
+        F.add(F.part_tree)
+        ShowPart = True
+        part_create()
+    if not ShowPart:
+        if not label_made:
+            os.system("parted mklable gpt")
+            label_made=True
+        part = F.part.value
+
+        os.system("parted mkpart")
+
+
 def language(*args):
     # 语言选择
     t = False
     F = LanguageSelect(name="LanguageSelect")
     F.edit()
-    language_list = ["zh_CN", "ja_JP"]
+    language_list = ["zh_CN", "ja_JP", "en_HK"]
     for i in language_list:
         if F.keyLanguage.value == i:
             t = True
