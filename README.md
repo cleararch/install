@@ -1,2 +1,2 @@
 # install
-安装脚本,使用npyscreen库
+基于 Python 的 Clear Arch TUI 安装程序
