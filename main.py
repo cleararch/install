@@ -1,39 +1,46 @@
-import os, json
-import npyscreen
+import os
 
-# 初始化封装器
-class install(npyscreen.NPSAppManaged):
-    def onStart(self):
-        self.addForm("MAIN", welcome, name="Welcome")
-        self.addForm("LANGUAGE", language, name="Select Your Language")
+exitMessage = "Exited Installation."
+illegalInput = "Please input a legal option!"
 
 
-# 欢迎
-class welcome(npyscreen.ActionForm):
-    def create(self):
-        self.name = "Welcome"
-        self.text = self.add(npyscreen.TitleFixedText, name="Welcome To Clear Arch Installer!")
-
-    def on_ok(self):
-        self.parentApp.switchForm("LANGUAGE")
-
-    def on_cancel(self):
-        exit()
-    
-# 选择语言
-# self.select.value[0]
-class language(npyscreen.ActionForm):
-    def create(self):
-        self.name = "Select Your Language"
-        self.select = self.add(npyscreen.TitleSelectOne, name="Language", values=["zh_CN", "en_HK", "ja_JP"])
-
-    def on_ok(self):
-        self.parentApp.switchForm("")
-
-    def on_cancel(self):
-        self.parentApp.switchFormPrevious()
+def welcome():
+    print(
+        "Welcome to Clear Arch Installation!\n"
+        "To learn how to install Clear Arch, please go to https://cleararch.vercel.app/ for help.\n")
+    while True:
+        userInput = input("Do you want to continue? (Y/n)")
+        if userInput in ['y', 'Y', '']:
+            network_check()
+            break
+        elif userInput in ['n', 'N']:
+            print(exitMessage)
+            break
+        else:
+            print(illegalInput)
 
 
-# 运行
-if __name__ == "__main__":
-    install().run()
+def network_check():
+    print("Checking Network...")
+    pingResult = os.popen("ping 9.9.9.9 -c 1").close()
+    if pingResult == 512:
+        print("Seems that you didn't connect to the network.\n"
+        "You can exit and check the network connection, or just ignore and continue.\n")
+
+        while True:
+            userInput = input("Do you want to continue? (y/N)")
+            if userInput in ['y', 'Y']:
+                print("114514")
+                break
+            elif userInput in ['n', 'N', '']:
+                print(exitMessage)
+                break
+            else:
+                print(illegalInput)
+
+    else:
+        print("114514")
+
+
+if __name__ == '__main__':
+    welcome()
