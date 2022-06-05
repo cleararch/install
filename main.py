@@ -93,7 +93,22 @@ def connect_network():
 
 # 分区
 def partition():
-    print("FUCK YOU!")
+    while True:
+        userInput = input("Do you want to partition the disk? Enter Y to launch cfdisk, or N to skip. (Y/n)")
+        if userInput in ['y', 'Y', '']:
+            checkingExit = os.system("cfdisk")
+            if checkingExit == 0: # os.system 进程结束后会返回 0，借此判断 cfdisk 退出情况
+                install()
+            break
+        elif userInput in ['n', 'N']:
+            install()
+            break
+        else:
+            print(illegalInput)
+
+
+def install():
+    print("install")
 
 
 if __name__ == '__main__':
