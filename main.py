@@ -82,6 +82,7 @@ def connect_network():
                 if result:
                     partition()
                     break
+                print("Please input a password!")
 
             else: # 包含密码
                 os.system("nmcli device wifi connect %s password %s" %(userInputSSID, userInputPwd))
