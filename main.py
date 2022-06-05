@@ -98,17 +98,18 @@ def partition():
         if userInput in ['y', 'Y', '']:
             checkingExit = os.system("cfdisk")
             if checkingExit == 0: # os.system 进程结束后会返回 0，借此判断 cfdisk 退出情况
-                install()
+                formatting()
             break
         elif userInput in ['n', 'N']:
-            install()
+            formatting()
             break
         else:
             print(illegalInput)
 
 
-def install():
-    print("install")
+# 格式化
+def formatting():
+    print("format")
 
 
 if __name__ == '__main__':
