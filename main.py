@@ -25,6 +25,7 @@ def welcome():
 # 检测网络连接状态
 def network_check():
     print("Checking Network...")
+
     pingResult = os.popen("ping 9.9.9.9 -c 1").close()
     if pingResult == 512: # ping 失败后会返回 512
         print(splitLine)
@@ -39,7 +40,6 @@ def network_check():
                     break
                 else:
                     print(illegalInput)
-
     else:
         partition()
 
@@ -57,8 +57,8 @@ def connect_network():
 
         print(splitLine)
         print("Rechecking Network...") # 检测连接
-        pingResult = os.popen("ping 9.9.9.9 -c 1").close()
 
+        pingResult = os.popen("ping 9.9.9.9 -c 1").close()
         if pingResult == 512:
             print("Connection failed. Please try again.")
             result = False
@@ -70,12 +70,11 @@ def connect_network():
     while True:
 
         userInputSSID = input("Please input the network SSID you want to connect: ")
-
         if userInputSSID == "":
             print("Please input a SSID!")
+
         else:
             userInputPwd = input("Please input password: ")
-
             if userInputPwd == "": # 无密码情况
                 os.system("nmcli device wifi connect %s" %(userInputSSID))
                 check_again()
