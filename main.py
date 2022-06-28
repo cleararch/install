@@ -108,11 +108,15 @@ def partition():
 
 # 格式化
 def formatting():
-    EFI=os.path.exists(/sys/firmware/efi)
+    EFI=os.path.exists("/sys/firmware/efi")
     print(os.system("fdisk -l"))
-    print("choose partition")
-    if EFI == true:
-        input("Please input your EFI partition:")
-        //TODO: double system or no
+    print("Choose the Partition")
+    if EFI == True:
+        userInput = input("Please input your EFI partition:")
+
+    else:
+        userInput = input("Where do you want to install the system?")
+
+        
 if __name__ == '__main__':
     welcome()
