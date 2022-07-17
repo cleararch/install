@@ -1,5 +1,5 @@
 import os
-import lang
+import lang as cross_lang
 
 
 # 欢迎
@@ -14,13 +14,14 @@ def welcome():
 
 # 选择语言
 def select_language():
-    global userLanguage
+    global lang
     print("Supported language:")
     print(*lang.supportedLanguage, sep = ", ")
 
     while True:
         userInputLanguage = input("Which language do you want to use: ")
         if userInputLanguage in lang.supportedLanguage:
+            lang=cross_lang.name(userLanguage)
             network_check()
             break
         else:
@@ -29,7 +30,7 @@ def select_language():
 
 # 检测网络连接状态
 def network_check():
-    print(lang.lang.checkingNetwork)
+    print(lang.checkingNetwork)
 
     pingResult = os.popen("ping 9.9.9.9 -c 1").close()
     if pingResult == 512: # ping 失败后会返回 512
@@ -43,7 +44,7 @@ def network_check():
                 elif userInput in ['n', 'N']:
                     #partition()
                     break
-                    exit
+                    exit()
                 else:
                     print(lang.illegalInput)
     else:
