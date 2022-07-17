@@ -1,5 +1,5 @@
 import os
-import lang as cross_lang
+import multi_lang
 supportedLanguage = ["en_US", "zh_CN"]
 
 # 欢迎
@@ -21,7 +21,7 @@ def select_language():
     while True:
         userInputLanguage = input("Which language do you want to use: ")
         if userInputLanguage in supportedLanguage:
-            lang=cross_lang.name(userInputLanguage)
+            lang=multi_lang.name(userInputLanguage)
             network_check()
             break
         else:
@@ -34,7 +34,8 @@ def network_check():
 
     pingResult = os.popen("ping 9.9.9.9 -c 1").close()
     if pingResult == 512: # ping 失败后会返回 512
-        print("\n", lang.didntConnectToNetwork)
+        print() # 加 \n 会换两行，加在下条有空格
+        print(lang.didntConnectToNetwork)
 
         while True:
                 userInput = input(lang.connectToNetwork)
@@ -55,33 +56,36 @@ def network_check():
 # 连接网络
 def connect_network():
     # 列出可用网络
-    print("Listing Network...\n")
+    print(lang.listingNetwork)
+    print()
     os.system("nmcli device wifi list")
-    print("\n")
+    print()
 
     # 将重新检测网络部分放入函数，便于后续操作
     def check_again():
-        global result # 定义全局变量以传出判断结果
+        global result
 
-        print("\nRechecking Network...") # 检测连接
+        print()
+        print(lang.recheckNetwork) # 检测连接
 
         pingResult = os.popen("ping 9.9.9.9 -c 1").close()
         if pingResult == 512:
-            print("Connection failed. Please try again.")
+            print()
+            print(lang.recheckNetworkFailed)
             result = False
         else:
             result = True
-            print("Success!")
+            print(lang.recheckNetworkSuccess)
 
 
     while True:
 
-        userInputSSID = input("Please input the network SSID you want to connect: ")
+        userInputSSID = input(lang.inputNetworkSSID)
         if userInputSSID == "":
-            print("Please input a SSID!")
+            print(lang.emptyNetworkSSID)
 
         else:
-            userInputPwd = input("Please input password: ")
+            userInputPwd = input(lang.inputNetworkPwd)
             if userInputPwd == "": # 无密码情况
                 os.system("nmcli device wifi connect %s" %(userInputSSID))
                 check_again()
