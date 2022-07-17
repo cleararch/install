@@ -1,6 +1,6 @@
 import os
 import lang as cross_lang
-
+supportedLanguage = ["en_US", "zh_CN"]
 
 # 欢迎
 def welcome():
@@ -16,12 +16,12 @@ def welcome():
 def select_language():
     global lang
     print("Supported language:")
-    print(*lang.supportedLanguage, sep = ", ")
+    print(supportedLanguage, sep = ", ")
 
     while True:
         userInputLanguage = input("Which language do you want to use: ")
-        if userInputLanguage in lang.supportedLanguage:
-            lang=cross_lang.name(userLanguage)
+        if userInputLanguage in supportedLanguage:
+            lang=cross_lang.name(userInputLanguage)
             network_check()
             break
         else:
